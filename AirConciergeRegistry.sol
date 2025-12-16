@@ -75,14 +75,14 @@ contract AirConciergeRegistry {
         );
         Candidate memory candidate = candidates[candidates.length - 1];
         uint256 currentTime = block.timestamp;
-        pilots[candidate.pilotAddr] = Pilot({
+       
+        if (compareStrings(_Y_or_N, "Y")) {
+            pilots[candidate.pilotAddr] = Pilot({
             pilotName: candidate.pilotName,
             pilotAddr: payable(candidate.pilotAddr),
             acceptedDate: currentTime,
             isArchived: false
         });
-        if (compareStrings(_Y_or_N, "Y")) {
-            
             emit Action("Pilot Accepted", candidate.pilotName, currentTime);
             candidates.pop();
         } else {
@@ -92,7 +92,7 @@ contract AirConciergeRegistry {
     }
 
     function owner_archivePilot(address _address) external onlyOwner {
-        pilots[_address].isArchived = false;
+        pilots[_address].isArchived = true;
         emit Action("Pilot Archived", pilots[_address].pilotName, block.timestamp);
     }
 }
